@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KingScript – Scripts & Unlock</title>
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lottie Web Component -->
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <style>
+    /* Fallback animated gradient if no Lottie JSON provided */
+    .animated-gradient {
+      background: linear-gradient(120deg, #0f172a, #111827, #0b1022);
+      background-size: 200% 200%;
+      animation: gradientShift 15s ease infinite;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: #0b1022; }
+    ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #374151; }
+
+    /* Simple utility for the overlay blur */
+    .backdrop-blur-soft { backdrop-filter: blur(8px); }
+  </style>
+</head>
+<body class="min-h-screen text-slate-100">
+  <!-- Background Layer -->
+  <div class="fixed inset-0 -z-10">
+    <!-- Lottie BG (replace src with your JSON link). If left blank, gradient fallback shows. -->
+    <div id="lottieWrap" class="absolute inset-0 hidden">
+      <lottie-player id="lottieBg" autoplay loop speed="1" mode="normal" class="w-full h-full object-cover"
+        src="">
+      </lottie-player>
+    </div>
+    <div id="gradientBg" class="animated-gradient absolute inset-0"></div>
+  </div>
+
+  <!-- Top Banner (Ad Slot) -->
+  <div class="w-full sticky top-0 z-30 bg-black/30 backdrop-blur-soft border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 py-2">
+      <div class="ad-slot w-full h-20 flex items-center justify-center rounded-xl bg-white/5 border border-white/10">
+        <!-- Adsterra Top Banner Code HERE -->
+        <span class="text-xs text-slate-300">Top Banner – paste Adsterra code here</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="max-w-7xl mx-auto px-4 pt-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 grid place-items-center">
+          <span class="text-indigo-300 font-black">KS</span>
+        </div>
+        <h1 class="text-2xl font-bold tracking-tight">KingScript</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <input id="search" type="text" placeholder="Search scripts..."
+          class="px-3 py-2 rounded-xl bg-white/10 border border-white/10 focus:outline-none focus:ring focus:ring-indigo-500/40 placeholder-slate-400" />
+        <button id="newTab" class="px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition font-medium">
+          Submit Script
+        </button>
+      </div>
+    </div>
+    <p class="mt-2 text-slate-300">Roblox scripts, tools & utilities. Unlock after viewing an ad (auto‑complete to <span class="font-semibold text-emerald-400">Done</span>).</p>
+
+    <!-- Tags -->
+    <div class="mt-4 flex flex-wrap gap-2" id="tags"></div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-12 gap-6">
+    <!-- Left Sidebar Banner -->
+    <aside class="col-span-12 lg:col-span-3 space-y-6">
+      <div class="ad-slot h-72 w-full rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+        <!-- Adsterra Left Sidebar Code HERE -->
+        <span class="text-xs text-slate-300">Left Sidebar Banner – paste Adsterra code here</span>
+      </div>
+      <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+        <h3 class="font-semibold mb-2">Info</h3>
+        <p class="text-sm text-slate-300">Ads may appear every 15s on random clicks. Unlock will auto set to <span class="text-emerald-400 font-semibold">Done</span> after the ad finishes.</p>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <section class="col-span-12 lg:col-span-9">
+      <!-- Grid -->
+      <div id="grid" class="grid sm:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="max-w-7xl mx-auto px-4 pb-10">
+    <div class="rounded-2xl bg-white/5 border border-white/10 p-4 flex items-center justify-between">
+      <span class="text-sm text-slate-400">© <span id="year"></span> KingScript. All rights reserved.</span>
+      <div class="flex items-center gap-3 text-sm">
+        <a href="#" class="text-slate-300 hover:text-white">Terms</a>
+        <span class="text-slate-600">•</span>
+        <a href="#" class="text-slate-300 hover:text-white">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interstitial Ad Modal -->
+  <div id="adModal" class="hidden fixed inset-0 z-40 items-center justify-center">
+    <div class="absolute inset-0 bg-black/70"></div>
+    <div class="relative w-full max-w-2xl mx-auto p-1">
+      <div class="rounded-2xl bg-slate-900 border border-white/10 overflow-hidden shadow-2xl">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-white/10">
+          <h3 class="font-semibold">Sponsored Ad</h3>
+          <button id="closeAd" class="text-sm px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-50" disabled>
+            Close (<span id="adTimer">8</span>s)
+          </button>
+        </div>
+        <div class="p-3">
+          <div class="ad-slot w-full h-64 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+            <!-- Adsterra Interstitial/Video Code HERE -->
+            <span class="text-xs text-slate-300">Interstitial Ad – paste Adsterra code here</span>
+          </div>
+          <p class="mt-3 text-xs text-slate-400">The unlock will auto‑complete to <span class="text-emerald-400 font-semibold">Done</span> after this ad finishes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Drawer (Unlock Page) -->
+  <div id="detailDrawer" class="hidden fixed inset-0 z-30">
+    <div class="absolute inset-0 bg-black/70" data-dismiss="drawer"></div>
+    <div class="absolute right-0 top-0 h-full w-full md:w-[900px] bg-slate-950 border-l border-white/10 shadow-2xl overflow-y-auto">
+      <!-- Drawer Header -->
+      <div class="sticky top-0 z-10 bg-slate-950/80 backdrop-blur-soft border-b border-white/10">
+        <div class="px-4 py-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <img id="detailImg" class="w-12 h-12 rounded-xl object-cover border border-white/10" alt="game"/>
+            <div>
+              <h3 id="detailTitle" class="text-lg font-semibold"></h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span id="statusPill" class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-md bg-red-500/20 text-red-300 border border-red-500/30">
+                  <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                  Pending
+                </span>
+                <span id="detailTags" class="text-xs text-slate-400"></span>
+              </div>
+            </div>
+          </div>
+          <button class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20" data-dismiss="drawer">Close</button>
+        </div>
+      </div>
+
+      <!-- Drawer Content -->
+      <div class="p-4 grid grid-cols-12 gap-4">
+        <!-- Left Banner -->
+        <div class="col-span-12 lg:col-span-4">
+          <div class="ad-slot w-full h-72 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+            <!-- Adsterra Drawer Left Banner Code HERE -->
+            <span class="text-xs text-slate-300">Drawer Left Banner – paste Adsterra code here</span>
+          </div>
+        </div>
+
+        <!-- Main Script Info -->
+        <div class="col-span-12 lg:col-span-8 space-y-4">
+          <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+            <h4 class="font-semibold mb-2">Description</h4>
+            <p id="detailDesc" class="text-sm text-slate-300"></p>
+          </div>
+
+          <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+            <div class="flex items-center justify-between">
+              <h4 class="font-semibold">Unlock</h4>
+              <button id="unlockBtn" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-medium">Watch Ad to Unlock</button>
+            </div>
+            <div id="unlockNote" class="mt-2 text-xs text-slate-400">After the ad finishes, status changes to <span class="text-emerald-400 font-semibold">Done</span> automatically.</div>
+            <div id="unlockedArea" class="hidden mt-4">
+              <div class="rounded-xl bg-black/40 border border-emerald-500/30 p-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm">Your script is ready.</span>
+                  <a id="downloadLink" href="#" target="_blank" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-sm">Download</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Extra Banner under Unlock -->
+          <div class="ad-slot w-full h-28 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+            <!-- Adsterra Drawer Inline Banner Code HERE -->
+            <span class="text-xs text-slate-300">Inline Banner – paste Adsterra code here</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /*********************** CONFIG ************************/
+    const AD_COOLDOWN_MS = 15000;   // Global random-click interstitial every 15s
+    const AD_WATCH_SECONDS = 8;     // Time to enable Close button & trigger Done
+
+    // If you have a Lottie JSON link, put it here. Otherwise gradient fallback shows.
+    const LOTTIE_JSON_URL = ""; // e.g. "https://assets9.lottiefiles.com/packages/lf20_xxx.json"
+    /*******************************************************/
+
+    // --- Background setup ---
+    const lottieWrap = document.getElementById('lottieWrap');
+    const lottieBg = document.getElementById('lottieBg');
+    const gradientBg = document.getElementById('gradientBg');
+    if (LOTTIE_JSON_URL) {
+      lottieBg.setAttribute('src', LOTTIE_JSON_URL);
+      lottieWrap.classList.remove('hidden');
+      gradientBg.classList.add('hidden');
+    }
+
+    // --- Sample Data (replace with your own list or fetch) ---
+    const TAGS = ["ESP", "Aimbot", "Admin", "Utility", "Auto Farm", "UI"];
+    const ITEMS = [
+      {
+        id: 1,
+        title: "BedWars – ESP + Aimbot",
+        img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=600&auto=format&fit=crop",
+        tags: ["ESP", "Aimbot"],
+        desc: "Powerful BedWars script featuring ESP overlays and smooth aiming assist. Updated frequently.",
+        download: "#"
+      },
+      {
+        id: 2,
+        title: "Adopt Me – Auto Farm",
+        img: "https://images.unsplash.com/photo-1599921245429-8736f0f4acff?q=80&w=600&auto=format&fit=crop",
+        tags: ["Auto Farm", "Utility"],
+        desc: "Automate pet care, tasks and resource gathering. Safe settings included.",
+        download: "#"
+      },
+      {
+        id: 3,
+        title: "Arsenal – Silent Aim UI",
+        img: "https://images.unsplash.com/photo-1542751110-97427bbecf20?q=80&w=600&auto=format&fit=crop",
+        tags: ["Aimbot", "UI"],
+        desc: "Minimalistic UI for Arsenal silent aim, FOV, smoothing and more.",
+        download: "#"
+      },
+      {
+        id: 4,
+        title: "Brookhaven – Admin Tools",
+        img: "https://images.unsplash.com/photo-1501466044931-62695aada8e9?q=80&w=600&auto=format&fit=crop",
+        tags: ["Admin", "Utility"],
+        desc: "Admin panel style tools for roleplay servers. Quick toggles.",
+        download: "#"
+      },
+      {
+        id: 5,
+        title: "Blox Fruits – ESP",
+        img: "https://images.unsplash.com/photo-1569931728443-0cf7141bfdc7?q=80&w=600&auto=format&fit=crop",
+        tags: ["ESP"],
+        desc: "See loot, players and NPCs with adjustable highlights.",
+        download: "#"
+      },
+      {
+        id: 6,
+        title: "MM2 – Utility Pack",
+        img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600&auto=format&fit=crop",
+        tags: ["Utility"],
+        desc: "Teleport presets, quick spectate and QoL tools for MM2.",
+        download: "#"
+      }
+    ];
+
+    // --- Render tags ---
+    const tagWrap = document.getElementById('tags');
+    TAGS.forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = 'px-3 py-1 rounded-xl text-sm bg-white/10 border border-white/10 hover:bg-white/20';
+      btn.textContent = t;
+      btn.addEventListener('click', () => {
+        const s = document.getElementById('search');
+        s.value = t;
+        filterGrid();
+      });
+      tagWrap.appendChild(btn);
+    });
+
+    // --- Render grid ---
+    const grid = document.getElementById('grid');
+    function cardTemplate(item){
+      const tagBadges = item.tags.map(tag => `<span class="text-[10px] px-2 py-0.5 rounded-md bg-white/10 border border-white/10">${tag}</span>`).join('');
+      return `
+        <div class="rounded-2xl bg-white/5 border border-white/10 overflow-hidden hover:border-white/20 transition">
+          <div class="relative">
+            <img src="${item.img}" alt="${item.title}" class="w-full h-40 object-cover"/>
+            <div class="absolute bottom-2 left-2 flex gap-2">${tagBadges}</div>
+          </div>
+          <div class="p-4 space-y-3">
+            <h3 class="font-semibold leading-tight">${item.title}</h3>
+            <p class="text-sm text-slate-300 line-clamp-2">${item.desc}</p>
+            <div class="flex items-center justify-between">
+              <button data-id="${item.id}" class="open-detail px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-sm font-medium">Unlock Script</button>
+              <div class="ad-slot w-24 h-8 rounded-lg bg-white/5 border border-white/10 grid place-items-center text-[10px] text-slate-300">Ad</div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderGrid(list){
+      grid.innerHTML = list.map(cardTemplate).join('');
+      document.querySelectorAll('.open-detail').forEach(btn => {
+        btn.addEventListener('click', (e) => openDetail(parseInt(e.currentTarget.getAttribute('data-id'))));
+      });
+    }
+
+    function filterGrid(){
+      const q = document.getElementById('search').value.toLowerCase().trim();
+      const filtered = !q ? ITEMS : ITEMS.filter(i => i.title.toLowerCase().includes(q) || i.tags.some(t => t.toLowerCase().includes(q)));
+      renderGrid(filtered);
+    }
+
+    renderGrid(ITEMS);
+
+    document.getElementById('search').addEventListener('input', filterGrid);
+    document.getElementById('newTab').addEventListener('click', () => window.open('#', '_blank'));
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // --- Detail Drawer Logic ---
+    const drawer = document.getElementById('detailDrawer');
+    const detailImg = document.getElementById('detailImg');
+    const detailTitle = document.getElementById('detailTitle');
+    const detailDesc = document.getElementById('detailDesc');
+    const detailTags = document.getElementById('detailTags');
+    const statusPill = document.getElementById('statusPill');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const unlockedArea = document.getElementById('unlockedArea');
+    const downloadLink = document.getElementById('downloadLink');
+
+    let currentItem = null;
+
+    function openDetail(id){
+      const item = ITEMS.find(i => i.id === id);
+      if (!item) return;
+      currentItem = item;
+      detailImg.src = item.img;
+      detailTitle.textContent = item.title;
+      detailDesc.textContent = item.desc;
+      detailTags.textContent = item.tags.join(' • ');
+      downloadLink.href = item.download || '#';
+      setPending();
+      drawer.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeDetail(){
+      drawer.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    document.querySelectorAll('[data-dismiss="drawer"]').forEach(el => el.addEventListener('click', closeDetail));
+
+    function setPending(){
+      statusPill.className = 'inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-md bg-red-500/20 text-red-300 border border-red-500/30';
+      statusPill.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> Pending';
+      unlockedArea.classList.add('hidden');
+      unlockBtn.disabled = false;
+    }
+
+    function setDone(){
+      statusPill.className = 'inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+      statusPill.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Done';
+      unlockedArea.classList.remove('hidden');
+      unlockBtn.disabled = true;
+    }
+
+    // --- Interstitial Ad Modal ---
+    const adModal = document.getElementById('adModal');
+    const closeAd = document.getElementById('closeAd');
+    const adTimerEl = document.getElementById('adTimer');
+
+    let adTimer = null;
+    let lastAdShownAt = 0;
+
+    function showAd(context = 'global'){
+      adModal.classList.remove('hidden');
+      adModal.classList.add('flex');
+      closeAd.disabled = true;
+      let secondsLeft = AD_WATCH_SECONDS;
+      adTimerEl.textContent = secondsLeft;
+
+      if (adTimer) clearInterval(adTimer);
+      adTimer = setInterval(() => {
+        secondsLeft -= 1;
+        adTimerEl.textContent = secondsLeft;
+        if (secondsLeft <= 0) {
+          clearInterval(adTimer);
+          closeAd.disabled = false;
+          // Auto-complete if the ad was triggered by unlock
+          if (context === 'unlock') {
+            // Automatically set to Done as soon as the ad duration finishes (no need to click Close)
+            setDone();
+          }
+        }
+      }, 1000);
+
+      // When closed, just hide modal
+      function onClose(){
+        adModal.classList.add('hidden');
+        adModal.classList.remove('flex');
+        closeAd.removeEventListener('click', onClose);
+      }
+      closeAd.addEventListener('click', onClose);
+
+      lastAdShownAt = Date.now();
+    }
+
+    // Unlock flow – clicking unlock always opens an interstitial ad and auto sets status to Done afterward
+    unlockBtn.addEventListener('click', () => {
+      showAd('unlock');
+    });
+
+    // Random global ad trigger on clicks with a 15s cooldown
+    document.addEventListener('click', (e) => {
+      const insideModal = e.target.closest('#adModal');
+      if (insideModal) return; // don't retrigger while ad is open
+      const now = Date.now();
+      if (now - lastAdShownAt >= AD_COOLDOWN_MS) {
+        // 50% chance on any click after cooldown
+        if (Math.random() < 0.5) {
+          showAd('global');
+        } else {
+          lastAdShownAt = now; // reset cooldown even if not showing to keep it from spamming
+        }
+      }
+    });
+
+  </script>
+</body>
+</html>
