@@ -1,170 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PandaUnlock - Roblox Scripts</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      color: white;
-      text-align: center;
-      background: black;
-      overflow-x: hidden;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PandaUnlock – Tasks</title>
+<style>
+  :root{
+    --bg:#000; --panel:#101010; --text:#fff; --muted:#b7b7b7;
+    --brand:#1db954; --brand-dark:#169446; --accent:#ff5722;
+    --border:#222; --good:#16c784; --bad:#ff4d4d;
+  }
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+  header{padding:12px 8px;text-align:center}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 12px}
+  .row{display:flex;gap:20px;align-items:flex-start}
+  .main{flex:1;min-width:280px}
+  .sidebar{width:160px;flex:0 0 160px;position:sticky;top:80px;align-self:flex-start}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px}
+  h1{font-size:26px;margin:10px 0 8px;text-align:center}
+  .sub{color:var(--muted);text-align:center;margin-bottom:16px}
 
-    /* Stars background */
-    .stars {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: url('https://i.ibb.co/y0M7tzs/stars.png') repeat;
-      animation: moveStars 200s linear infinite;
-      z-index: -1;
-    }
-    @keyframes moveStars {
-      from {background-position: 0 0;}
-      to {background-position: -10000px 5000px;}
-    }
+  /* Task list */
+  .tasks{display:grid;gap:14px;margin-top:8px}
+  .task{background:#0c0c0c;border:1px solid var(--border);border-radius:10px;padding:14px}
+  .t-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .t-title{font-weight:700}
+  .t-status{font-size:12px;color:var(--muted)}
+  .t-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{border:0;border-radius:8px;padding:10px 14px;font-weight:700;cursor:pointer}
+  .btn-primary{background:var(--brand);color:#fff}
+  .btn-primary:hover{background:var(--brand-dark)}
+  .btn[disabled]{opacity:.5;cursor:not-allowed}
+  .badge{padding:4px 8px;border-radius:999px;font-size:12px}
+  .ok{background:rgba(22,199,132,.15);color:var(--good);border:1px solid rgba(22,199,132,.25)}
+  .wait{background:rgba(255,215,0,.12);color:#ffd700;border:1px solid rgba(255,215,0,.25)}
+  .not{background:rgba(255,77,77,.12);color:var(--bad);border:1px solid rgba(255,77,77,.25)}
 
-    /* Banners */
-    .banner-top, .banner-bottom {
-      margin: 15px auto;
-      width: fit-content;
-      background: #222;
-    }
-    .banner-side-left, .banner-side-right {
-      position: fixed;
-      top: 150px;
-      width: 160px;
-      height: 600px;
-      background: #222;
-    }
-    .banner-side-left { left: 0; }
-    .banner-side-right { right: 0; }
+  /* Unlock box */
+  .unlock{margin-top:16px;text-align:center}
+  #unlockBtn{background:var(--accent);color:#fff;font-size:18px;padding:14px 22px;border-radius:10px;border:0;cursor:not-allowed;opacity:.6}
+  #unlockBtn.enabled{cursor:pointer;opacity:1}
+  #unlockNote{color:var(--muted);font-size:13px;margin-top:8px}
 
-    /* Unlock */
-    .unlock-box {
-      margin: 80px auto;
-      padding: 30px;
-      width: 90%;
-      max-width: 500px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(255,255,255,0.3);
-    }
-    #unlock-btn {
-      background: red;
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      font-size: 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-    }
-    #unlock-btn.done { background: green; }
-  </style>
+  /* Banners */
+  .top-banner{display:flex;justify-content:center}
+  .top-banner > div{max-width:728px}
+  .side-slot{width:160px;height:600px}
+
+  /* Responsive */
+  @media (max-width:1000px){
+    .row{flex-direction:column}
+    .sidebar{position:static;width:100%;display:flex;justify-content:center}
+  }
+</style>
 </head>
 <body>
-  <div class="stars"></div>
 
-  <!-- TOP Banner -->
-  <div class="banner-top">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '83d271dba83ea056ee94fe6dc8f1895c',
-        'format' : 'iframe',
-        'height' : 90,
-        'width' : 728,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/83d271dba83ea056ee94fe6dc8f1895c/invoke.js"></script>
-  </div>
+  <!-- TOP 728x90 BANNER -->
+  <header>
+    <div class="wrap top-banner">
+      <div>
+        <script type="text/javascript">
+          atOptions = {'key':'6f29d9442ad50b64e6049de3dd0a6541','format':'iframe','height':90,'width':728,'params':{}};
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/6f29d9442ad50b64e6049de3dd0a6541/invoke.js"></script>
+      </div>
+    </div>
+  </header>
 
-  <!-- LEFT Banner -->
-  <div class="banner-side-left">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '4532f665479690f3dbdd4e1dc155880f',
-        'format' : 'iframe',
-        'height' : 600,
-        'width' : 160,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/4532f665479690f3dbdd4e1dc155880f/invoke.js"></script>
-  </div>
+  <main class="wrap">
+    <div class="row">
+      <section class="main">
+        <div class="panel">
+          <h1>Complete Tasks to Unlock 🚀</h1>
+          <div class="sub">Finish all tasks below to get the script link.</div>
 
-  <!-- RIGHT Banner -->
-  <div class="banner-side-right">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : 'd061030e739db8d4ac2ce24732f414c1',
-        'format' : 'iframe',
-        'height' : 300,
-        'width' : 160,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/d061030e739db8d4ac2ce24732f414c1/invoke.js"></script>
-  </div>
+          <div id="taskList" class="tasks">
+            <!-- Task 1 -->
+            <div class="task" data-id="ad1">
+              <div class="t-head">
+                <div class="t-title">Task 1 — Click Ad #1</div>
+                <div class="t-status"><span class="badge not">Not started</span></div>
+              </div>
+              <div class="t-actions">
+                <button class="btn btn-primary open" data-url="https://www.revenuecpmgate.com/dhuze4qp?key=98fc6466023c6b88d9e4d882af610b2f">Open Ad</button>
+              </div>
+            </div>
 
-  <!-- Unlock System -->
-  <div class="unlock-box">
-    <h2>Unlock Roblox Script</h2>
-    <p>Click the button below, wait a few seconds, and your script will unlock!</p>
-    <button id="unlock-btn">Unlock</button>
-  </div>
+            <!-- Task 2 -->
+            <div class="task" data-id="ad2">
+              <div class="t-head">
+                <div class="t-title">Task 2 — Click Ad #2</div>
+                <div class="t-status"><span class="badge not">Not started</span></div>
+              </div>
+              <div class="t-actions">
+                <button class="btn btn-primary open" data-url="https://www.revenuecpmgate.com/dhuze4qp?key=98fc6466023c6b88d9e4d882af610b2f">Open Ad</button>
+              </div>
+            </div>
 
-  <!-- BOTTOM Banner -->
-  <div class="banner-bottom">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '73223abbd599992fed452d84cb0a6185',
-        'format' : 'iframe',
-        'height' : 60,
-        'width' : 468,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/73223abbd599992fed452d84cb0a6185/invoke.js"></script>
-  </div>
+            <!-- Task 3 -->
+            <div class="task" data-id="ad3">
+              <div class="t-head">
+                <div class="t-title">Task 3 — Click Ad #3</div>
+                <div class="t-status"><span class="badge not">Not started</span></div>
+              </div>
+              <div class="t-actions">
+                <button class="btn btn-primary open" data-url="https://www.revenuecpmgate.com/dhuze4qp?key=98fc6466023c6b88d9e4d882af610b2f">Open Ad</button>
+              </div>
+            </div>
 
-  <!-- Ads: Popunder / Smartlink / Social Bar / Native -->
-  <script type='text/javascript' src='//pl27576063.revenuecpmgate.com/6a/c7/da/6ac7da7e7d970d7bd907b474f671556b.js'></script>
-  <script type='text/javascript' src='//pl27576067.revenuecpmgate.com/d1/4a/5a/d14a5ac67b20ac5a2818c5cc7a185883.js'></script>
-  <script async="async" data-cfasync="false" src="//pl27576072.revenuecpmgate.com/6862ad628ed0a3296068904038ab9d56/invoke.js"></script>
-  <div id="container-6862ad628ed0a3296068904038ab9d56"></div>
+            <!-- Task 4 -->
+            <div class="task" data-id="ad4">
+              <div class="t-head">
+                <div class="t-title">Task 4 — Click Ad #4</div>
+                <div class="t-status"><span class="badge not">Not started</span></div>
+              </div>
+              <div class="t-actions">
+                <button class="btn btn-primary open" data-url="https://www.revenuecpmgate.com/dhuze4qp?key=98fc6466023c6b88d9e4d882af610b2f">Open Ad</button>
+              </div>
+            </div>
 
-  <script type="text/javascript">
-    atOptions = {
-      'key' : '0317f207a9b461a97f46f0fca11b4e0e',
-      'format' : 'iframe',
-      'height' : 50,
-      'width' : 320,
-      'params' : {}
-    };
-  </script>
-  <script type="text/javascript" src="//www.highperformanceformat.com/0317f207a9b461a97f46f0fca11b4e0e/invoke.js"></script>
+            <!-- Task 5: YouTube -->
+            <div class="task" data-id="yt">
+              <div class="t-head">
+                <div class="t-title">Task 5 — Subscribe to the YouTube channel</div>
+                <div class="t-status"><span class="badge not">Not started</span></div>
+              </div>
+              <div class="t-actions">
+                <a class="btn btn-primary open" href="https://www.youtube.com/@KingScriptR" target="_blank" rel="noopener">Open Channel</a>
+              </div>
+            </div>
+          </div>
 
-  <script>
-    // Unlock button logic
-    document.getElementById("unlock-btn").addEventListener("click", function() {
-      let btn = this;
-      btn.innerText = "Please wait...";
+          <div class="unlock">
+            <button id="unlockBtn" disabled>🔓 Unlock Script</button>
+            <div id="unlockNote">Complete all 5 tasks to enable the button.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT 160x600 BANNER -->
+      <aside class="sidebar">
+        <div class="panel side-slot">
+          <script type="text/javascript">
+            atOptions = {'key':'6a7a5f03caff9fcb9b85bb705f273137','format':'iframe','height':600,'width':160,'params':{}};
+          </script>
+          <script type="text/javascript" src="//www.highperformanceformat.com/6a7a5f03caff9fcb9b85bb705f273137/invoke.js"></script>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- POPUNDER -->
+  <script type='text/javascript' src='//pl27532985.revenuecpmgate.com/4f/c0/60/4fc060e7e33e003f9bebb61bc97e6a67.js'></script>
+
+<script>
+  const REQUIRED_SECONDS = 5; 
+  const taskEls = Array.from(document.querySelectorAll('.task'));
+  const unlockBtn = document.getElementById('unlockBtn');
+  const linkvertiseURL = "https://linkvertise.com/1389820/Dv0ovTZsvHv8?o=sharing";
+
+  const state = {};
+  taskEls.forEach(t => state[t.dataset.id] = {done:false});
+
+  function setStatus(el, type, text){
+    const badge = el.querySelector('.t-status .badge');
+    badge.className = 'badge ' + type;
+    badge.textContent = text;
+  }
+
+  function checkAllDone(){
+    const allDone = Object.values(state).every(s => s.done);
+    if(allDone){
+      unlockBtn.disabled = false;
+      unlockBtn.classList.add('enabled');
+      document.getElementById('unlockNote').textContent = "All tasks completed. Click to unlock.";
+    }
+  }
+
+  document.querySelectorAll('.task .open').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const task = btn.closest('.task');
+      const id = task.dataset.id;
+
+      if(btn.tagName === 'BUTTON'){
+        const url = btn.getAttribute('data-url');
+        window.open(url, '_blank', 'noopener');
+      }
+
+      setStatus(task, 'wait', `Wait ${REQUIRED_SECONDS}s…`);
+
       setTimeout(() => {
-        btn.classList.add("done");
-        btn.innerText = "✅ Done";
-      }, 4000);
+        state[id].done = true;
+        setStatus(task, 'ok', '✅ Completed');
+        btn.disabled = true;
+        checkAllDone();
+      }, REQUIRED_SECONDS * 1000);
     });
+  });
 
-    // Random ad popup every 30s
-    setInterval(() => {
-      window.open("https://www.revenuecpmgate.com/y6rzsfwd4?key=d389f2c4d6bfbfd91eab470d89efcb7b", "_blank");
-    }, 30000);
-  </script>
+  unlockBtn.addEventListener('click', () => {
+    if(!unlockBtn.disabled){
+      window.location.href = linkvertiseURL;
+    }
+  });
+</script>
 </body>
 </html>
