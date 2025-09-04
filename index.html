@@ -72,6 +72,7 @@
   <h1>🔓 PandaUnlock</h1>
   <p id="unlockNote">Complete all tasks to unlock your link.</p>
 
+  <!-- TASKS -->
   <div class="task-list">
     <div class="task" data-id="ad1">
       <span>Visit Sponsor Link #1</span>
@@ -90,9 +91,10 @@
     </div>
   </div>
 
+  <!-- Unlock button -->
   <button id="unlockBtn" disabled>🔓 Unlock Now</button>
 
-  <!-- Banner ads area -->
+  <!-- Banner ads -->
   <div class="ads">
     <!-- 300x250 -->
     <script type="text/javascript">
@@ -112,12 +114,37 @@
     </script>
     <script type="text/javascript" src="//www.highperformanceformat.com/4532f665479690f3dbdd4e1dc155880f/invoke.js"></script>
 
+    <!-- 160x300 -->
+    <script type="text/javascript">
+      atOptions = {'key':'d061030e739db8d4ac2ce24732f414c1','format':'iframe','height':300,'width':160,'params':{}};
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/d061030e739db8d4ac2ce24732f414c1/invoke.js"></script>
+
     <!-- 468x60 -->
     <script type="text/javascript">
       atOptions = {'key':'73223abbd599992fed452d84cb0a6185','format':'iframe','height':60,'width':468,'params':{}};
     </script>
     <script type="text/javascript" src="//www.highperformanceformat.com/73223abbd599992fed452d84cb0a6185/invoke.js"></script>
+
+    <!-- 320x50 -->
+    <script type="text/javascript">
+      atOptions = {'key':'0317f207a9b461a97f46f0fca11b4e0e','format':'iframe','height':50,'width':320,'params':{}};
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/0317f207a9b461a97f46f0fca11b4e0e/invoke.js"></script>
+
+    <!-- Native banner -->
+    <script async="async" data-cfasync="false" src="//pl27576072.revenuecpmgate.com/6862ad628ed0a3296068904038ab9d56/invoke.js"></script>
+    <div id="container-6862ad628ed0a3296068904038ab9d56"></div>
+
+    <!-- Social Bar -->
+    <script type='text/javascript' src='//pl27576067.revenuecpmgate.com/d1/4a/5a/d14a5ac67b20ac5a2818c5cc7a185883.js'></script>
   </div>
+
+  <!-- Popunder + Smartlink -->
+  <script type='text/javascript' src='//pl27576063.revenuecpmgate.com/6a/c7/da/6ac7da7e7d970d7bd907b474f671556b.js'></script>
+  <script type="text/javascript">
+    atOptions = {'key':'27475568','format':'iframe','height':250,'width':300,'params':{}};
+  </script>
 
   <script>
     const REQUIRED_SECONDS = 5;
@@ -144,7 +171,7 @@
     document.querySelectorAll('.task .open').forEach(btn=>{
       btn.addEventListener('click',()=>{
         const task=btn.closest('.task');const id=task.dataset.id;
-        if(btn.tagName==="BUTTON"){window.open(btn.getAttribute('data-url'),'_blank','noopener');}
+        window.open(btn.getAttribute('data-url'),'_blank','noopener');
         setStatus(task,'wait',`Wait ${REQUIRED_SECONDS}s…`);
         setTimeout(()=>{
           state[id].done=true;
