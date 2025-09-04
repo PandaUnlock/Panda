@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PandaUnlock - Roblox Scripts</title>
   <style>
-    /* Background animation (stars + moon theme) */
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -15,7 +14,7 @@
       overflow-x: hidden;
     }
 
-    /* Star field */
+    /* Stars background */
     .stars {
       position: fixed;
       width: 100%;
@@ -24,43 +23,37 @@
       animation: moveStars 200s linear infinite;
       z-index: -1;
     }
-
     @keyframes moveStars {
       from {background-position: 0 0;}
       to {background-position: -10000px 5000px;}
     }
 
-    /* Banner placements */
-    .banner-top {
+    /* Banners */
+    .banner-top, .banner-bottom {
       margin: 15px auto;
-      width: 728px;
-      height: 90px;
+      width: fit-content;
       background: #222;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
-
-    .banner-side {
+    .banner-side-left, .banner-side-right {
       position: fixed;
-      right: 0;
-      top: 120px;
+      top: 150px;
       width: 160px;
       height: 600px;
       background: #222;
     }
+    .banner-side-left { left: 0; }
+    .banner-side-right { right: 0; }
 
-    /* Unlock section */
+    /* Unlock */
     .unlock-box {
-      margin: 50px auto;
+      margin: 80px auto;
       padding: 30px;
       width: 90%;
       max-width: 500px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255,255,255,0.1);
       border-radius: 15px;
       box-shadow: 0 0 15px rgba(255,255,255,0.3);
     }
-
     #unlock-btn {
       background: red;
       color: white;
@@ -71,54 +64,91 @@
       cursor: pointer;
       transition: all 0.3s ease-in-out;
     }
-
-    #unlock-btn.done {
-      background: green;
-    }
+    #unlock-btn.done { background: green; }
   </style>
 </head>
 <body>
   <div class="stars"></div>
 
-  <!-- Top Banner -->
+  <!-- TOP Banner -->
   <div class="banner-top">
-    <!-- Adsterra Banner 728x90 -->
     <script type="text/javascript">
       atOptions = {
-        'key' : 'your-banner-key-728x90',
+        'key' : '83d271dba83ea056ee94fe6dc8f1895c',
         'format' : 'iframe',
         'height' : 90,
         'width' : 728,
         'params' : {}
       };
     </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/your-banner-key-728x90/invoke.js"></script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/83d271dba83ea056ee94fe6dc8f1895c/invoke.js"></script>
   </div>
 
-  <!-- Side Banner -->
-  <div class="banner-side">
-    <!-- Adsterra Banner 160x600 -->
+  <!-- LEFT Banner -->
+  <div class="banner-side-left">
     <script type="text/javascript">
       atOptions = {
-        'key' : 'your-banner-key-160x600',
+        'key' : '4532f665479690f3dbdd4e1dc155880f',
         'format' : 'iframe',
         'height' : 600,
         'width' : 160,
         'params' : {}
       };
     </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/your-banner-key-160x600/invoke.js"></script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/4532f665479690f3dbdd4e1dc155880f/invoke.js"></script>
+  </div>
+
+  <!-- RIGHT Banner -->
+  <div class="banner-side-right">
+    <script type="text/javascript">
+      atOptions = {
+        'key' : 'd061030e739db8d4ac2ce24732f414c1',
+        'format' : 'iframe',
+        'height' : 300,
+        'width' : 160,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/d061030e739db8d4ac2ce24732f414c1/invoke.js"></script>
   </div>
 
   <!-- Unlock System -->
   <div class="unlock-box">
     <h2>Unlock Roblox Script</h2>
-    <p>Click the button below, wait for the ad, then your script will unlock!</p>
+    <p>Click the button below, wait a few seconds, and your script will unlock!</p>
     <button id="unlock-btn">Unlock</button>
   </div>
 
-  <!-- Random Popunder Ad -->
-  <script type="text/javascript" src="//pl27532985.revenuecpmgate.com/4f/c0/60/4fc060e7e33e003f9bebb61bc97e6a67.js"></script>
+  <!-- BOTTOM Banner -->
+  <div class="banner-bottom">
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '73223abbd599992fed452d84cb0a6185',
+        'format' : 'iframe',
+        'height' : 60,
+        'width' : 468,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/73223abbd599992fed452d84cb0a6185/invoke.js"></script>
+  </div>
+
+  <!-- Ads: Popunder / Smartlink / Social Bar / Native -->
+  <script type='text/javascript' src='//pl27576063.revenuecpmgate.com/6a/c7/da/6ac7da7e7d970d7bd907b474f671556b.js'></script>
+  <script type='text/javascript' src='//pl27576067.revenuecpmgate.com/d1/4a/5a/d14a5ac67b20ac5a2818c5cc7a185883.js'></script>
+  <script async="async" data-cfasync="false" src="//pl27576072.revenuecpmgate.com/6862ad628ed0a3296068904038ab9d56/invoke.js"></script>
+  <div id="container-6862ad628ed0a3296068904038ab9d56"></div>
+
+  <script type="text/javascript">
+    atOptions = {
+      'key' : '0317f207a9b461a97f46f0fca11b4e0e',
+      'format' : 'iframe',
+      'height' : 50,
+      'width' : 320,
+      'params' : {}
+    };
+  </script>
+  <script type="text/javascript" src="//www.highperformanceformat.com/0317f207a9b461a97f46f0fca11b4e0e/invoke.js"></script>
 
   <script>
     // Unlock button logic
@@ -128,12 +158,12 @@
       setTimeout(() => {
         btn.classList.add("done");
         btn.innerText = "✅ Done";
-      }, 4000); // 4 seconds simulate ad watching
+      }, 4000);
     });
 
     // Random ad popup every 30s
     setInterval(() => {
-      window.open("https://www.revenuecpmgate.com/dhuze4qp?key=98fc6466023c6b88d9e4d882af610b2f", "_blank");
+      window.open("https://www.revenuecpmgate.com/y6rzsfwd4?key=d389f2c4d6bfbfd91eab470d89efcb7b", "_blank");
     }, 30000);
   </script>
 </body>
